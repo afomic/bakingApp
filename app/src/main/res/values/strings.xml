@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">MrCook</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="food_list">food_list_text</string>
+    <string name="step_details_text">Step Details</string>
+    <string name="error_msg">Sorry an Error has Occurred</string>
+    <string name="recipe_video">Recipe Video</string>
+</resources>

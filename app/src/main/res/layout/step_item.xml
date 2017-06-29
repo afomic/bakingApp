@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:gravity="center"
+    android:layout_marginBottom="@dimen/dimen_4"
+    android:background="@color/colorWhite"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:scaleType="centerCrop"
+        android:src="@drawable/video_player"
+        android:layout_width="@dimen/image_weight"
+        android:layout_height="@dimen/image_height" />
+
+        <TextView
+            android:id="@+id/tv_step_name"
+            android:textSize="@dimen/large_text_size"
+            tools:text="how to make indomie"
+            android:textStyle="bold"
+            android:padding="@dimen/dimen_4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+</LinearLayout>
