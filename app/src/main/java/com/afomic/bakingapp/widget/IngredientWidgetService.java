@@ -18,10 +18,6 @@ import java.util.List;
 public class IngredientWidgetService extends RemoteViewsService {
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        DataAccessLayer dataSource=new DataAccessLayer(this.getApplicationContext());
-        int foodID =intent.getIntExtra(Constant.BUNDLE_FOOD_ID,1);
-        List<Ingredient> ingredients=dataSource.getIngredient(foodID);
-        Log.d(Constant.TAG, "onGetViewFactory: "+ingredients.size());
-        return new ingredientWidgetRemoteViewFactory(this.getApplicationContext(),ingredients);
+        return new ingredientWidgetRemoteViewFactory(this.getApplicationContext());
     }
 }

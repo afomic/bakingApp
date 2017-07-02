@@ -3,6 +3,8 @@ package com.afomic.bakingapp.fragment;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.os.AsyncTask;
@@ -22,6 +24,7 @@ import android.widget.ImageView;
 
 
 import com.afomic.bakingapp.R;
+import com.afomic.bakingapp.data.Constant;
 import com.afomic.bakingapp.widget.IngredientProvider;
 
 import java.util.HashMap;
@@ -34,8 +37,10 @@ import java.util.HashMap;
 public class FoodDetailFragment extends Fragment {
     public static final String BUNDLE_FOOD_ID="id";
     private int mFoodID=0;
+    private SharedPreferences sharedPreferences;
     private int[] imageIDs={0, R.drawable.nutella,R.drawable.brownies,
             R.drawable.yellow_cake,R.drawable.cheese};
+    private String[] names={"","Nutella pie","Brownies","Yellow Cake","Cheese cake"};
     public static  FoodDetailFragment getInstance(int foodID){
         FoodDetailFragment fragment =new FoodDetailFragment();
         Bundle args=new Bundle();
@@ -58,20 +63,33 @@ public class FoodDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View v=inflater.inflate(R.layout.food_detail_layout,container,false);
-        ImageView mFoodImage=(ImageView) v.findViewById(R.id.iv_food_image);
+
+        final ImageView mFoodImage=(ImageView) v.findViewById(R.id.iv_food_image);
+
         TabLayout tabLayout=(TabLayout) v.findViewById(R.id.food_detail_tablayout);
+
         Toolbar toolbar=(Toolbar)v.findViewById(R.id.food_detail_toolbar);
+
         AppCompatActivity activity=(AppCompatActivity) getActivity();
+
         activity.setSupportActionBar(toolbar);
+
         mFoodImage.setImageResource(imageIDs[mFoodID]);
+
         FloatingActionButton populateActionButton=(FloatingActionButton) v.findViewById(R.id.fab);
+
         populateActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                updateWidget();
+                Intent intent = new Intent(getActivity(), IngredientProvider.class);
+                intent.putExtra(Constant.BUNDLE_FOOD_NAME,names[mFoodID]);
+                sharedPreferences.edit().putInt(Constant.BUNDLE_FOOD_ID,mFoodID).apply();
+                getActivity().sendBroadcast(intent);
 
             }
         });
+        sharedPreferences=getActivity().getSharedPreferences(getActivity().getPackageName(),
+                Context.MODE_PRIVATE);
 
         ViewPager mPager=(ViewPager) v.findViewById(R.id.detail_pager);
         mPager.setAdapter(new FragmentStatePagerAdapter(getFragmentManager()) {
@@ -99,20 +117,5 @@ public class FoodDetailFragment extends Fragment {
         return v;
     }
 
-    public void updateWidget(){
-        Context context = getActivity().getApplicationContext();
-        int[] ids = AppWidgetManager.getInstance(getActivity()).
-                getAppWidgetIds(new ComponentName(context, IngredientProvider.class));
-        IngredientProvider ingredientWidget=new IngredientProvider();
-        ingredientWidget.onUpdate(getActivity(), AppWidgetManager.getInstance(getActivity()),ids);
-
-
-        //Update the ListView of ingredients
-
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-        ComponentName thisWidget = new ComponentName(context, IngredientProvider.class);
-        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
-        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_ingredient_list);
-    }
 
 }

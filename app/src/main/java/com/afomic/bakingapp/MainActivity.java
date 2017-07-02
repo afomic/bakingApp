@@ -4,18 +4,15 @@ import android.content.res.Configuration;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.test.espresso.IdlingResource;
-import android.support.test.espresso.core.deps.guava.annotations.VisibleForTesting;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afomic.bakingapp.adapter.FoodAdapter;
 import com.afomic.bakingapp.data.DataAccessLayer;
@@ -31,12 +28,12 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements Callback<List<Food>> {
 
-    RecyclerView mFoodList;
-    boolean twoPane=false;
-    DataAccessLayer accessLayer;
-    RecyclerView.LayoutManager manager;
-    ProgressBar mProgressBar;
-    TextView emptyView;
+    private RecyclerView mFoodList;
+    private boolean twoPane=false;
+    private DataAccessLayer accessLayer;
+    private RecyclerView.LayoutManager manager;
+    private ProgressBar mProgressBar;
+    private TextView emptyView;
 
     @Nullable
     private SimpleIdlingResource mIdlingResource;
@@ -44,7 +41,6 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Foo
     /**
      * Only called from test, creates and returns a new {@link SimpleIdlingResource}.
      */
-    @VisibleForTesting
     @NonNull
     public IdlingResource getIdlingResource() {
         if (mIdlingResource == null) {
@@ -86,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements Callback<List<Foo
             mProgressBar.setVisibility(View.VISIBLE);
             mCall.enqueue(this);
         }else{
+            setIdlingResourceState(true);
             List<Food> foods=accessLayer.getFood();
             FoodAdapter adapter=new FoodAdapter(this,foods,twoPane,getSupportFragmentManager());
             mFoodList.setAdapter(adapter);

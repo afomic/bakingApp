@@ -22,7 +22,7 @@ public class IngredientProvider extends AppWidgetProvider {
                                 int appWidgetId) {
 
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
-        views.setTextViewText(R.id.tv_widget_food_name,mFoodName);
+        views.setTextViewText(R.id.tv_widget_food_name,mFoodName+" ingredients");
 
         Intent serviceIntent=new Intent(context,IngredientWidgetService.class);
         serviceIntent.putExtra(Constant.BUNDLE_FOOD_ID,mFoodID);
@@ -57,6 +57,19 @@ public class IngredientProvider extends AppWidgetProvider {
         super.onReceive(context, intent);
         mFoodID=intent.getIntExtra(Constant.BUNDLE_FOOD_ID,0);
         mFoodName=intent.getStringExtra(Constant.BUNDLE_FOOD_NAME);
+
+        int[] ids = AppWidgetManager.getInstance(context).
+                getAppWidgetIds(new ComponentName(context, IngredientProvider.class));
+        IngredientProvider ingredientWidget=new IngredientProvider();
+        ingredientWidget.onUpdate(context, AppWidgetManager.getInstance(context),ids);
+
+
+        //Update the ListView of ingredients
+
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        ComponentName thisWidget = new ComponentName(context, IngredientProvider.class);
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_ingredient_list);
     }
 }
 

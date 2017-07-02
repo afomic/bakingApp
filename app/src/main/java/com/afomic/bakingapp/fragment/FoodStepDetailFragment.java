@@ -56,7 +56,7 @@ public class FoodStepDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View v=inflater.inflate(R.layout.food_step_detail,container,false);
-        exoPlayerView=v.findViewById(R.id.exoplayer_view);
+        exoPlayerView=(SimpleExoPlayerView) v.findViewById(R.id.exoplayer_view);
         TextView mDescription=(TextView) v.findViewById(R.id.tv_step_details);
         mDescription.setText(recipeStep.getDesription());
 
